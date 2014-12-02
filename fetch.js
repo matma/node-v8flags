@@ -1,18 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 
-const exec = require('child_process').exec;
-const nodePath = process.execPath;
 const version = process.versions.v8;
 const tmpfile = path.join(__dirname, version+'.flags.json');
+const flagsFile = path.join(__dirname, 'flags.temp');
 
 if (!fs.existsSync(tmpfile)) {
-  exec('"'+nodePath+'" --v8-options', function (execErr, result) {
+  fs.readFile( flagsFile, function( execErr, result) {
     var flags;
     if (execErr) {
       throw new Error(execErr);
     } else {
-      flags = result.match(/\s\s--(\w+)/gm).map(function (match) {
+      flags = result.toString().match(/\s\s--(\w+)/gm).map(function (match) {
         return match.substring(2);
       });
       fs.writeFile(tmpfile, JSON.stringify(flags), { encoding:'utf8' },

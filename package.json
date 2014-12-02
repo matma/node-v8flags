@@ -21,6 +21,7 @@
     }
   ],
   "scripts": {
+    "preinstall": "node --v8-options >> flags.temp",
     "install": "node fetch.js",
     "test": "mocha -R spec test.js"
   },
